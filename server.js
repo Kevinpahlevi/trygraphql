@@ -34,9 +34,10 @@ var app = express();
 server.applyMiddleware({ app, path:'/graphql' });
 
 router.get('/', function enter(req, res){
-  res.json({ message: 'hooray! welcome to our api!' });
+  res.json('hooray! welcome to our api!');
 });
 
+app.use('/', router)
 app.listen(process.env.PORT || 4000, () => {
   // console.log('Running a GraphQL API server at localhost:4000/graphql');
 })
