@@ -2,6 +2,7 @@ var express = require('express');
 // var graphqlHTTP = require('express-graphql');
 // var { buildSchema } = require('graphql');
 var mongodb = require('mongodb');
+var router = express.Router();
 
 const { ApolloServer} = require('apollo-server-express');
 const typeDefs = require('./schema');
@@ -31,6 +32,10 @@ class Message {
 var server = new ApolloServer({typeDefs,resolvers})
 var app = express();
 server.applyMiddleware({ app, path:'/graphql' });
+
+router.get('/', function enter(req, res){
+  res.json({ message: 'hooray! welcome to our api!' });
+});
 
 app.listen(process.env.PORT || 4000, () => {
   // console.log('Running a GraphQL API server at localhost:4000/graphql');
