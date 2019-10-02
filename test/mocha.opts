@@ -1,0 +1,4 @@
+--bail
+--exit
+--slow 1000
+--timeout 300000

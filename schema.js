@@ -17,12 +17,12 @@ const typeDefs = gql`
   }
 
   type Query {
-    getMessage(id: ID!): [Message]
+    getMessage(id: ID!): Message
     getAll: [Message]
   }
 
   type Mutation {
-    createMessage(input: MessageInput): String
+    createMessage(input: MessageInput): Message
     updateMessage(id: ID!, input: MessageInput): String
   }`;
 

@@ -5,7 +5,7 @@ var resolvers = {
     Query: {
         getMessage: async function (_,{id}) {
            var bookdb = await Book.find({id})
-           console.log(bookdb)
+           console.log(bookdb.map(book=>({id:book.id,content:book.content,author:book.author})))
            if (bookdb.length === 0) {
                 throw new Error("not_found")
            } else {
@@ -23,7 +23,7 @@ var resolvers = {
 
     },
     Mutation:{
-        createMessage: function (_,{input}) {
+        createMessage: async function (_,{input}) {
             // console.log('create')
             // Create a random id for our "database".
             var id = require('crypto').randomBytes(10).toString('hex');
@@ -34,15 +34,9 @@ var resolvers = {
             book.content = input.content
             book.author = input.author
             // save the bear and check for errors
-            book.save(function(err) {
-                // console.log('save')
-                if (err){
-                    // res.send(err);
-                    throw new Error(err);
-                }
-            });
-            return 'OK'
-        
+            var bookdb = await book.save();
+            var hasil = {id:bookdb.id,content:bookdb.content,author:bookdb.author}
+            return (hasil)        
             // return new Message(id, input);
           },
           updateMessage: async function (_,{id, input}) {
