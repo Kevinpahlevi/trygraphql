@@ -29,7 +29,8 @@ class Message {
 
 
 
-var server = new ApolloServer({typeDefs,resolvers})
+var server = new ApolloServer({typeDefs,resolvers,introspection: true,
+  playground: true,})
 var app = express();
 server.applyMiddleware({ app, path:'/graphql' });
 
