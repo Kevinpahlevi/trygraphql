@@ -4,8 +4,8 @@ var Book  = require('./app/model/Book');
 var resolvers = {
     Query: {
         getMessage: async function (_,{id}) {
-           var bookdb = await Book.find({id})
-           console.log(bookdb.map(book=>({id:book.id,content:book.content,author:book.author})))
+           var bookdb = await Book.findOne({id})
+        //    console.log(bookdb)
            if (bookdb.length === 0) {
                 throw new Error("not_found")
            } else {

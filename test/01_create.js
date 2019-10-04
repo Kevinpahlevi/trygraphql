@@ -43,14 +43,16 @@ describe('create.item', async () => {
                 }
             }
         })
+        const create = createMessage
         const idCreate = createMessage.id
-        const {data} = await client.query({
+        const {data:{getMessage}} = await client.query({
             query: getOneQl,
             variables: {
             id: idCreate
             }
         })
-        console.log(data);
+        const get = getMessage
+        expect(create.content).to.equal(get.content)
         
     });
 
