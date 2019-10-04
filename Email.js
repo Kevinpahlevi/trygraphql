@@ -2,6 +2,7 @@ var nodemailer = require('nodemailer')
 var hbs = require('nodemailer-express-handlebars')
 var path = require('path');
 var ejs = require('ejs')
+var config = require('config')
 
 // var fs = require('fs');
 // var template = fs.readFileSync('./emailTemplate/index.html',{encoding:'utf-8'});
@@ -17,8 +18,8 @@ async function mail(params) {
         port: 465, // Port
         secure: true, // this is true as port is 465
         auth: {
-            user: 'roy.parawali@gmail.com', // generated ethereal user
-            pass: 'aremania87' // generated ethereal password
+            user: config.get('USER_MAIL'), // generated ethereal user
+            pass: config.get('PASS_MAIL') // generated ethereal password
         }
     });
 

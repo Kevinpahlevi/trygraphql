@@ -5,6 +5,7 @@ var mongodb = require('mongodb');
 var router = express.Router();
 var Mail = require('./Email')
 var Notification = require('./Notification')
+var config = require('config')
 
 const { ApolloServer} = require('apollo-server-express');
 const typeDefs = require('./schema');
@@ -54,6 +55,7 @@ router.get('/notif', function enter(req, res){
 
 app.use('/', router)
 app.listen(process.env.PORT || 4000, () => {
+  // console.log(config.get('USER_MAIL'))
   // console.log('Running a GraphQL API server at localhost:4000/graphql');
 })
 
