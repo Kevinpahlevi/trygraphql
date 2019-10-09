@@ -1,37 +1,80 @@
-var admin = require('firebase-admin');
+var admin = require('firebase-admin')
 
-var serviceAccount = require('./keyService.json');
+var firebase
 
-var firebase = admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://test-project-8dc3c.firebaseio.com",
-}); 
-
-const messaging = firebase.messaging();
-
-function Notification(params) {
-
-var webKevin = "e0DHwOAvr1vcbxO0ZHbXK1:APA91bFoDKbX_TUTJGrEGQ4cLD2xQjNFT6Jl_bB-kQKcAy8xHkY7PrnfiosFyKVRVYKCpR5ptC-c151lCEHMLYXuGFx1Ik26GnxB7pWo977NA9FhTYow4NNfHF72Or19GbPuF2xxH4G1"
-
-var payload = {
-  notification: {
-    title: "NOTIFICATION FROM BACKEND",
-    body: "notif from backend."
+// CONFIG-FIREBASE-CLOUD
+function Config (serviceAccount, databaseURL) {
+  try {
+    firebase = admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+      databaseURL
+    })
+  } catch (Error) {
+    console.log('ERROR CONFIG : ', Error)
   }
-};
-
- var options = {
-  priority: "high",
-  timeToLive: 60 * 60 *24
-};
-
-firebase.messaging().sendToDevice(webKevin, payload, options)
-  .then(function(response) {
-    console.log("Successfully sent message:", response);
-  })
-  .catch(function(error) {
-    console.log("Error sending message:", error);
-  });
 }
 
-module.exports = Notification
+// SEND-NOTIFICATION
+async function Send (target, payload, options) {
+  try {
+    const data = await firebase.messaging().sendToDevice(target, payload, options)
+    // .then(function(response) {
+    //   console.log("Successfully sent message:", response);
+    // })
+    // .catch(function(error) {
+    //   console.log("Error sending message:", error);
+    // });
+
+    return data
+  } catch (error) {
+    return error
+  }
+}
+
+async function subscribed (token, topic) {
+  try {
+    const data = await firebase.messaging().subscribeToTopic(token, topic)
+    // .then(function(response) {
+    //   // See the MessagingTopicManagementResponse reference documentation
+    //   // for the contents of response.
+    //   console.log(response)
+    //  return response
+    // })
+    // .catch(function(error) {
+    //  return error
+    // });
+    return data
+  } catch (error) {
+    return error
+  }
+}
+
+async function unsubscribed (token, topic) {
+  try {
+    const data = await firebase.messaging().unsubscribeFromTopic(token, topic)
+    // .then(function(response) {
+    //   // See the MessagingTopicManagementResponse reference documentation
+    //   // for the contents of response.
+    //   console.log(response)
+    //  return response
+    // })
+    // .catch(function(error) {
+    //  return error
+    // });
+    return data
+  } catch (error) {
+    return error
+  }
+}
+
+async function sendWithTopic (params) {
+  try {
+  // Send a message to devices subscribed to the provided topic.
+    const data = await admin.messaging().send(params)
+    return data
+  } catch (error) {
+    return error
+  }
+}
+
+module.exports = { Config, Send, subscribed, unsubscribed, sendWithTopic }
